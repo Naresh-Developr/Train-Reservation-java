@@ -53,6 +53,31 @@ public class trainReservation{
             passengerName = sc.nextLine();
             return passengerName;
         }
+        public String trainNumber(){
+            System.out.println("Enter Train Number: ");
+            trainNumber = sc.nextLine();
+            return trainNumber;
+        }
+        public String classType(){
+            System.out.println("Enter class type: ");
+            classtype = sc.nextLine();
+            return classtype;
+        }
+        public String journy(){
+            System.out.println("Enter journy: ");
+            journy = sc.nextLine();
+            return journy;
+        } 
+        public String from(){
+            System.out.println("Enter From: ");
+            from = sc.nextLine();
+            return from;
+        }
+        public String to(){
+            System.out.println("Enter To : ");
+            to = sc.nextLine();
+            return to;
+        }
             
     }
     
