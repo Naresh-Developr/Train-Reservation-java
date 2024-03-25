@@ -117,26 +117,96 @@ public class trainReservation{
                         String from = pnr.getFrom();
                         String to = pnr.getTo();
 
-                        try(PreparedStatement preparedStatement = Connection.prepareStatement(insertRecord)){
+                        try(PreparedStatement preparedStatement = myConnection.prepareStatement(insertRecord)){
+                            preparedStatement.setInt(1, pnr_number);
+                            preparedStatement.setString(2, passengerName);
+                            preparedStatement.setString(3, trainNumber);
+                            preparedStatement.setString(4, classtype);
+                            preparedStatement.setString(5, journy);
+                            preparedStatement.setString(6,from);
+                            preparedStatement.setString(7, to);
 
-                        }catch(Exception e){
+                            int row_affected = preparedStatement.executeUpdate();
+                            if(row_affected>0){
+                                System.out.println("Record added sucessfully");
+                            } 
+                            else{
+                                System.out.println("No records were added");
+                            }
+
+                        }catch(SQLException e){
+                            System.err.println("SQLException: "+ e.getMessage());
 
                         }
                     }
+                    else if(choice == 2){
+                        System.out.println("Enter the pnr number to delete record: ");
+                        int pnrNumber = sc.nextInt();
+                        try(PreparedStatement preparedStatement = myConnection.prepareStatement(deleteRecord)){
 
+                            preparedStatement.setInt(1, pnrNumber);
+                            int rowsAffected = preparedStatement.executeUpdate();
 
-                    
+                            if(rowsAffected > 0){
+                                System.out.println("Record deleted succesfully.");
+                            }else{
+                                System.out.println("No records were deleted");
+                            }
+            
+                        }catch(SQLException e){
+                            System.err.println("SQLException: "+ e.getMessage());
+                        }
 
+                    }
+                    else if(choice == 3){
+
+                        try(PreparedStatement preparedStatement = myConnection.prepareStatement(ShowQuery);
+                                ResultSet resultSet = preparedStatement.executeQuery()){
+                            System.out.println("\nAll records were printing: ");
+                            while(resultSet.next()){
+                                String pnrNumber = resultSet.getString("pnr_number");
+                                String passengerName = resultSet.getString("passenger_name");
+                                String trainNumber = resultSet.getString("train_number");
+                                String classType = resultSet.getString("class_type");
+                                String journeyDate = resultSet.getString("journey_date");
+                                String fromLocation = resultSet.getString("from_location");
+                                String toLocation = resultSet.getString("to_location");
+
+                                System.out.println("PNR Number: " + pnrNumber);
+                                System.out.println("Passenger Name: " + passengerName);
+                                System.out.println("Train Number: " + trainNumber);
+                                System.out.println("Class Type: " + classType);
+                                System.out.println("Journey Date: " + journeyDate);
+                                System.out.println("From Location: " + fromLocation);
+                                System.out.println("To Location: " + toLocation);
+                                System.out.println("--------------");
+
+                            }
+                        }catch(SQLException e){
+                            System.err.println("SQLException: "+e.getMessage());
+
+                        }
+
+                    }
+                    else if(choice ==4){
+                        System.out.println("Exiting Program ");
+                        break;
+                    }
+                    else{
+                        System.out.println("Invalid Choice entered");
+                    }
                 }
 
-            }catch(Exception e){
+            }catch(SQLException e){
+                System.err.println("SQLException: " + e.getMessage());
 
             };
 
-        }catch(Exception e){
+        }catch(ClassNotFoundException e){
+            System.err.println("Error Loading JDBC: " + e.getMessage());
 
         };
-
+            sc.close();
     }
     
 }
